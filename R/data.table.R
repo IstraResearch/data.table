@@ -8,7 +8,7 @@ dummyFactory <- function() {
 }
 
 funcs <- list()
-for (i in 1:100000)
+for (i in 1:10000)
   funcs[[i]] <- dummyFactory
 
 
