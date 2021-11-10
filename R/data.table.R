@@ -1,3 +1,17 @@
+
+dummyFactory <- function() {
+  a <- 1
+  internal.func <- function(b) {
+    a+b
+  }
+  internal.func
+}
+
+funcs <- list()
+for (i in 1:100000)
+  funcs[[i]] <- dummyFactory
+
+
 if (!exists("trimws", "package:base")) {
   # trimws was new in R 3.2.0. Backport it for internal data.table use in R 3.1.0
   trimws = function(x) {
