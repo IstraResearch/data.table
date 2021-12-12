@@ -7,6 +7,8 @@
 
 2. `setDT()` no longer modifies the class of other names bound to the origin data.frame - e.g., argument DFs names at a caller to a function which uses setDT. Cf [#4784](https://github.com/Rdatatable/data.table/issues/4784). Thanks @OfekShilon for the report and fix.
 
+3. If a data.table was generated from an existing data.frame, as in `df2 <- df1; dt <- setDT(df1)`, some (but not all!) modifications to `dt` would leak to `df2`,  [#4783](https://github.com/Rdatatable/data.table/issues/4783). Thanks to @OfekShilon for investigating and the PR.
+
 
 # data.table [v1.14.3](https://github.com/Rdatatable/data.table/milestone/20)  (in development)
 

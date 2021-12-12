@@ -2215,6 +2215,7 @@ as.data.frame.data.table = function(x, ...)
   setattr(ans,"sorted",NULL)  # remove so if you convert to df, do something, and convert back, it is not sorted
   setattr(ans,"index",NULL)  #4889 #5042
   setattr(ans,".internal.selfref",NULL)
+  setattr(ans, "allow.assign.inplace", NULL)
   # leave tl intact, no harm,
   ans
 }
@@ -2232,6 +2233,7 @@ as.list.data.table = function(x, ...) {
   setattr(ans, "sorted", NULL)
   setattr(ans, "index", NULL)  #4889 #5042
   setattr(ans,".internal.selfref", NULL)   # needed to pass S4 tests for example
+  setattr(ans, "allow.assign.inplace", NULL)
   ans
 }
 
@@ -2802,7 +2804,7 @@ setDF = function(x, rownames=NULL) {
     setattr(x, "sorted", NULL)
     setattr(x, "index", NULL)  #4889 #5042
     setattr(x, ".internal.selfref", NULL)
-    setattr(x, "index", NULL)  # bug 4883
+    setattr(x, "allow.assign.inplace", NULL)
   } else if (is.data.frame(x)) {
     if (!is.null(rownames)) {
       if (length(rownames) != nrow(x))
@@ -2838,7 +2840,8 @@ setDF = function(x, rownames=NULL) {
   invisible(x)
 }
 
-setDT = function(x, keep.rownames=FALSE, key=NULL, check.names=FALSE) {
+setDT = function(x, keep.rownames=FALSE, key=NULL, check.names=FALSE,
+                 prevent.assign.inplace=TRUE) {
   name = substitute(x)
   if (is.name(name)) {
     home = function(x, env) {
@@ -2879,6 +2882,8 @@ setDT = function(x, keep.rownames=FALSE, key=NULL, check.names=FALSE) {
       x[, (nm[1L]) := rn]
       setcolorder(x, nm)
     }
+    if(prevent.assign.inplace)
+      setattr(x, "allow.assign.inplace", FALSE)
   } else if (is.list(x) && length(x)==1L && is.matrix(x[[1L]])) {
     # a single list(matrix) is unambiguous and depended on by some revdeps, #3581
     x = as.data.table.matrix(x[[1L]])
@@ -2915,6 +2920,8 @@ setDT = function(x, keep.rownames=FALSE, key=NULL, check.names=FALSE) {
     # to have the class apply only to the new copy. #4784
     setalloccol(x)
     setattr(x,"class",c("data.table","data.frame"))
+    if(prevent.assign.inplace)
+      setattr(x, "allow.assign.inplace", FALSE)
   } else {
     stopf("Argument 'x' to 'setDT' should be a 'list', 'data.frame' or 'data.table'")
   }
