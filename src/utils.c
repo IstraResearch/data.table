@@ -375,7 +375,7 @@ SEXP dt_zlib_version() {
 #ifndef NOZLIB
   snprintf(out, 70, "zlibVersion()==%s ZLIB_VERSION==%s", zlibVersion(), ZLIB_VERSION);
 #else
-  snprintf(out, 70, _("zlib header files were not found when data.table was compiled"));
+  snprintf(out, 70, "zlib header files were not found when data.table was compiled");
 #endif
   return ScalarString(mkChar(out));
 }

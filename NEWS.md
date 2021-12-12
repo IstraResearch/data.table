@@ -2,6 +2,12 @@
 
 **Benchmarks are regularly updated: [here](https://h2oai.github.io/db-benchmark/)**
 
+## Istra fixes:
+1. `setDF()` now clears existing indices, as it does for other `data.table`-only attributes. Doing so prevents some errors that could happen if the `setDT()` is later applied after the indices are mutated; see [#4889](https://github.com/Rdatatable/data.table/issues/4889)
+
+2. `setDT()` no longer modifies the class of other names bound to the origin data.frame - e.g., argument DFs names at a caller to a function which uses setDT. Cf [#4784](https://github.com/Rdatatable/data.table/issues/4784). Thanks @OfekShilon for the report and fix.
+
+
 # data.table [v1.14.3](https://github.com/Rdatatable/data.table/milestone/20)  (in development)
 
 ## NEW FEATURES
@@ -623,7 +629,6 @@
 
 2. `fintersect()` now retains the order of the first argument as reasonably expected, rather than retaining the order of the second argument, [#4716](https://github.com/Rdatatable/data.table/issues/4716). Thanks to Michel Lang for reporting, and Ben Schwen for the PR.
 
-3. `setDT()` no longer modifies the class of other names bound to the origin data.frame - e.g., argument DFs names at a caller to a function which uses setDT. Cf [#4784](https://github.com/Rdatatable/data.table/issues/4784). Thanks @OfekShilon for the report and fix.
 
 ## NOTES
 

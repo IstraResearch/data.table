@@ -2802,6 +2802,7 @@ setDF = function(x, rownames=NULL) {
     setattr(x, "sorted", NULL)
     setattr(x, "index", NULL)  #4889 #5042
     setattr(x, ".internal.selfref", NULL)
+    setattr(x, "index", NULL)  # bug 4883
   } else if (is.data.frame(x)) {
     if (!is.null(rownames)) {
       if (length(rownames) != nrow(x))
